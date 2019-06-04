@@ -4,19 +4,29 @@ import { observable, decorate } from 'mobx';
 import { observer } from 'mobx-react';
 import './index.css';
 
+const appState = observable({
+  count: 0
+});
+
+appState.increment = function () {
+  this.count++;
+};
+
+appState.decrement = function () {
+  this.count--;
+};
+
 const Counter = observer(class Counter extends Component {
-  count = 0;
+  handleDecrement = () => { this.props.store.decrement(); };
 
-  decrement = () => { this.count--; };
-
-  increment = () => { this.count++; };
+  handleIncrement = () => { this.props.store.increment(); };
 
   render() {
     return (
       <div className="container">
-        Counter: {this.count}<br />
-        <button onClick={this.decrement}>-</button>
-        <button onClick={this.increment}>+</button>
+        Counter: {this.props.store.count}<br />
+        <button onClick={this.handleDecrement}>-</button>
+        <button onClick={this.handleIncrement}>+</button>
       </div>
     );
   }
@@ -26,4 +36,4 @@ decorate(Counter, {
   count: observable
 });
 
-ReactDOM.render(<Counter />, document.getElementById('root'));
+ReactDOM.render(<Counter store={appState}/>, document.getElementById('root'));
