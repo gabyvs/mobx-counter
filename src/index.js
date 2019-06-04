@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { observable, decorate } from 'mobx';
+import { observer } from 'mobx-react';
 import './index.css';
 
-class Counter extends Component {
+const Counter = observer(class Counter extends Component {
+  count = 0;
 
   decrement = () => { this.count--; };
 
@@ -17,6 +20,10 @@ class Counter extends Component {
       </div>
     );
   }
-}
+});
+
+decorate(Counter, {
+  count: observable
+});
 
 ReactDOM.render(<Counter />, document.getElementById('root'));
